@@ -8,7 +8,7 @@
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item active">Dashboard</li>
                 </ol>
             </div><!-- /.col -->
@@ -24,7 +24,7 @@
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>150</h3>
+                        <h3>{{$total->total}}</h3>
 
                         <p>Total Produk</p>
                     </div>
@@ -35,7 +35,7 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>53<sup style="font-size: 20px">%</sup></h3>
+                        <h3>{{$jual->total}}</h3>
 
                         <p>Produk Bisa Dijual</p>
                     </div>
@@ -46,7 +46,7 @@
                 <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3>65</h3>
+                        <h3>{{$tidak->total}}</h3>
 
                         <p>Produk Tidak Bisa Dijual</p>
                     </div>
@@ -73,22 +73,14 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @foreach($produk as $data)
                                 <tr>
-                                    <td>Trident</td>
-                                    <td>Internet
-                                        Explorer 4.0
-                                    </td>
-                                    <td>Win 95+</td>
-                                    <td> 4</td>
+                                    <td>{{$data->nama}}</td>
+                                    <td>{{$data->nkategori}}</td>
+                                    <td>{{$data->harga}}</td>
+                                    <td>{{$data->nstatus}}</td>
                                 </tr>
-                                <tr>
-                                    <td>Trident</td>
-                                    <td>Internet
-                                        Explorer 5.0
-                                    </td>
-                                    <td>Win 95+</td>
-                                    <td>5</td>
-                                </tr>
+                                @endforeach
                         </table>
                     </div>
                     <!-- /.card-body -->

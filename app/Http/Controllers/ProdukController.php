@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kategori;
+use App\Models\Produk;
+use App\Models\Status;
 use Illuminate\Http\Request;
 
 class ProdukController extends Controller
@@ -14,7 +17,13 @@ class ProdukController extends Controller
      */
     public function index()
     {
-        return view('produk');
+        // $produk = Produk::with(['kategori', 'status' => function ($query) {$query->where('nama_status', 'bisa dijual');}])->get();
+        $produk = Produk::select('produk.id_produk as id', 'produk.nama_produk as nama', 'produk.harga as harga', 'kategori.nama_kategori as nkategori', 'status.nama_status as nstatus')
+        ->leftjoin('kategori', 'produk.kategori_id', '=', 'kategori.id_kategori')
+        ->leftjoin('status', 'produk.status_id', '=', 'status.id_status')
+        ->where('status.nama_status', 'bisa dijual')->get();
+        // dd($produk);
+        return view('produk.produk', ['produk' => $produk]);
     }
 
     /**
@@ -24,7 +33,9 @@ class ProdukController extends Controller
      */
     public function create()
     {
-        //
+        $kategori = Kategori::all();
+        $status = Status::all();
+        return view('produk.tambah_produk', ['kategori' => $kategori, 'status' => $status]);
     }
 
     /**
@@ -35,7 +46,13 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $produk = new Produk;
+        $produk->nama_produk = $request->nama; 
+        $produk->kategori_id = $request->kategori; 
+        $produk->harga = $request->harga; 
+        $produk->status_id = $request->status; 
+        $produk->save();
+        return redirect('/produk');
     }
 
     /**
@@ -57,7 +74,10 @@ class ProdukController extends Controller
      */
     public function edit($id)
     {
-        //
+        $produk = Produk::find($id);
+        $kategori = Kategori::all();
+        $status = Status::all();
+        return view('produk.edit_produk', ['produk' => $produk, 'kategori' => $kategori, 'status' => $status]);
     }
 
     /**
@@ -69,7 +89,13 @@ class ProdukController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $produk = Produk::find($id);
+        $produk->nama_produk = $request->nama; 
+        $produk->kategori_id = $request->kategori; 
+        $produk->harga = $request->harga; 
+        $produk->status_id = $request->status; 
+        $produk->save();
+        return redirect('/produk');
     }
 
     /**
@@ -78,8 +104,11 @@ class ProdukController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $produk = Produk::findOrFail($request->id);
+        $produk->delete();
+        return redirect('/produk');
     }
+
 }
