@@ -12,6 +12,6 @@ class Status extends Model
     protected $fillable = ['nama_status'];
 
     public function produk(){
-        return $this->hasMany(Produk::class, 'id_status', 'status_id');
+        return $this->hasMany(Produk::class, 'status_id', 'id_status');
     }
 }
